@@ -1,8 +1,9 @@
 import React from 'react';
-import { Typography, CssBaseline, Card, CardActions, CardContent,  Grid, Button, Container, Divider, Popover, IconButton } from '@mui/material';
+import { Typography, CssBaseline, Card, CardActions, CardContent,  Grid, Button, Container, Divider, Popover, IconButton, useMediaQuery } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { StyledContainer, ReviewButton, StyledCardMedia, PopoverContent } from './styles';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
 
 
 
@@ -82,7 +83,8 @@ const App = () => {
         activeCard.orderDetails.address.split(',').slice(1).join(',')
       ] 
     : ['', ''];
-
+    
+    const matches = useMediaQuery('(max-width:767px)');
 
     return (
         <ThemeProvider theme={theme}>
@@ -94,66 +96,64 @@ const App = () => {
                         {cards.map((card) => (
                             <Grid item xs={12} sm={6} md={4} lg={3} key={card.orderDetails.orderNumber}>            
                             <Card variant="outlined" sx={{ marginBottom: 2, backgroundColor: 'grey.200' }}>
-                            <CardContent>
-    <Grid container spacing={3} justifyContent="space-between">   
-        <Grid item xs={12} md={2}>
-            <Typography>ORDER PLACED</Typography>
-            <Typography>{card.orderDetails.orderPlaced}</Typography>
-        </Grid>
-        <Grid item xs={12} md={2}>
-            <Typography>TOTAL</Typography>
-            <Typography>{card.orderDetails.total}</Typography>
-        </Grid>
-        <Grid item xs={12} md={2}>
-            <Typography>SHIP TO</Typography>
-            <div onClick={(e) => handleOpenPopover(e, card)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                <Typography>{card.orderDetails.shipTo}</Typography>
-                <IconButton size="small" color="primary" style={{ padding: 0 }}>
-                    <ArrowDropDownIcon />
-                </IconButton>
-            </div>
-            <Popover
-                open={openPopover}
-                anchorEl={anchorEl}
-                onClose={handleClosePopover}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-            >
-                <PopoverContent>
-                    <Typography variant="body1" component="div" fontWeight="bold">
-                        {activeCard ? activeCard.orderDetails.shipTo : ''}
-                    </Typography>
-                    <Typography variant="body2" component="div">
-                        {addressParts[0]}
-                        <br />
-                        {addressParts[1]}
-                    </Typography>
-                </PopoverContent>
-            </Popover>
-        </Grid>
+                            <CardContent sx={matches ? { padding: '8px' } : {}}>
+                                <Grid container spacing={matches ? 1 : 3} justifyContent="space-between">  
+                                    <Grid item xs={12} md={2}>
+                                        <Typography>ORDER PLACED</Typography>
+                                        <Typography>{card.orderDetails.orderPlaced}</Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={2}>
+                                        <Typography>TOTAL</Typography>
+                                        <Typography>{card.orderDetails.total}</Typography>
+                                    </Grid>
+                                    <Grid item xs={12} md={2}>
+                                        <Typography>SHIP TO</Typography>
+                                        <div onClick={(e) => handleOpenPopover(e, card)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                                            <Typography>{card.orderDetails.shipTo}</Typography>
+                                            <IconButton size="small" color="primary" style={{ padding: 0 }}>
+                                                <ArrowDropDownIcon />
+                                            </IconButton>
+                                        </div>
+                                        <Popover
+                                            open={openPopover}
+                                            anchorEl={anchorEl}
+                                            onClose={handleClosePopover}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'left',
+                                            }}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'left',
+                                            }}
+                                        >
+                                            <PopoverContent>
+                                                <Typography variant="body1" component="div" fontWeight="bold">
+                                                    {activeCard ? activeCard.orderDetails.shipTo : ''}
+                                                </Typography>
+                                                <Typography variant="body2" component="div">
+                                                    {addressParts[0]}
+                                                    <br />
+                                                    {addressParts[1]}
+                                                </Typography>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </Grid>
 
-        <Grid item xs={12} md={6}>
-            <Grid container justifyContent="flex-end">
-                <Grid item>
-                    <Typography>{card.orderDetails.orderNumber}</Typography>
-                </Grid>
-            </Grid>
-            <Grid container justifyContent="flex-end">
-                <Grid item>
-                    <Button size="small" color="primary">View Order Details</Button>
-                </Grid>
-            </Grid>
-        </Grid>
-    </Grid>
-</CardContent>
-
-
+                                    <Grid item xs={12} md={6}>
+                                        <Grid container justifyContent="flex-end">
+                                            <Grid item>
+                                                <Typography>{card.orderDetails.orderNumber}</Typography>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container justifyContent="flex-end">
+                                            <Grid item>
+                                                <Button size="small" color="primary">View Order Details</Button>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </CardContent>
 
                             <Divider variant="middle" />
 
